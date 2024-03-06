@@ -1,4 +1,4 @@
-def apriori(data, support_threshold):
+def Apriori_Algorithm(data, support_threshold):
     """
     Generate frequent item sets using the Apriori algorithm.
 
