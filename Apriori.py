@@ -50,9 +50,9 @@ def Apriori_Algorithm(data, support_threshold):
     # Keep only the pairs that have a frequency greater than the support threshold
     frequent_pairs = {pair: freq for pair, freq in all__possible_pairs.items() if freq >= support_threshold}
 
-    # Print the frequent item pairs
-    print("\nYour Frequent item pairs are ready\n")
-    print(frequent_pairs)
-    print("\n____________________________\n")
+    # # Print the frequent item pairs
+    # print("\nApriori : Your Frequent item pairs are ready\n")
+    # print(frequent_pairs)
+    # print("\n____________________________\n")
 
     return frequent_pairs

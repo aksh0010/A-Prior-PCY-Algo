@@ -32,7 +32,7 @@ def Multistage_Algorithm(data, support_threshold, num_buckets):
             basket_from_hashing = hash_function(item, num_buckets)
 
             frequency[basket_from_hashing] += 1
-
+    
     # Second pass
     # In the second pass, the algorithm identifies frequent items based on the support threshold.
     # It goes through each basket again,
@@ -59,9 +59,9 @@ def Multistage_Algorithm(data, support_threshold, num_buckets):
     #and remove those which doesn't meet the criteria that is threshold
     #Basically  we remove all the items which are not frequent from  our frequent_items dictionary
     frequent_items = {item: freq for item, freq in frequent_items.items() if freq >= support_threshold}
-    print("\nMULTISTAGE : Your Frequent item pairs are ready\n")
-    print(frequent_items)
-    print("\n____________________________\n")
+    # print("\nMULTISTAGE : Your Frequent item pairs are ready\n")
+    # print(frequent_items)
+    # print("\n____________________________\n")
     return frequent_items
 
 def Multihash_Algorithm(data, support_threshold, num_buckets):
@@ -110,8 +110,8 @@ def Multihash_Algorithm(data, support_threshold, num_buckets):
     # Filter out infrequent items
     #Same as Multistage 3rd pass
     frequent_items = {item: freq for item, freq in frequent_items.items() if freq >= support_threshold}
-    print("\nMULTIHASH : Your Frequent item pairs are ready\n")
-    print(frequent_items)
-    print("\n____________________________\n")
+    # print("\nMULTIHASH : Your Frequent item pairs are ready\n")
+    # print(frequent_items)
+    # print("\n____________________________\n")
     
     return frequent_items
