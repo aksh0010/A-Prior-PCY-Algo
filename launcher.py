@@ -5,11 +5,19 @@ import random
 import time
 import matplotlib.pyplot as plt
 
-# Open the file in read mode ('r')
-with open('retail.txt', 'r') as file:
-    # Read the contents of the file and split each line into a list of items
-    data = [line.strip().split() for line in file]
+try:
+    # Open the file in read mode ('r')
+    with open('retail.txt', 'r') as file:
+        # Read the contents of the file and split each line into a list of items
+        data = [[int(item) for item in line.strip().split()] for line in file]
+except FileNotFoundError:
+    print("File not found. Please check the file path.")
+except ValueError:
+    print("Invalid data format. Make sure all items in the file are integers.")
+except UnicodeDecodeError:
+    print("Unable to decode the file. Please check the file encoding.")
 
+print(type(data))
 # Define percentages and threshold percentages starts from 1 % , 5% and goes to 100%
 percentages = [0.01, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]
 threshold_percentages = [0.01,0.05, 0.1]  # Define your threshold percentages here starts from 1 % , 5% and 10%

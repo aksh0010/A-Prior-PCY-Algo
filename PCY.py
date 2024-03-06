@@ -4,65 +4,44 @@ import hashlib
 #As we know for hashfunction, we need the total number of possible buckets we need thus we need num_buckets
 
 def hash_function(item, num_buckets):
-    
-    basket_from_hashing =int(hashlib.md5(str(item).encode()).hexdigest(), 16) % num_buckets
-    return basket_from_hashing
-
+    return hash(item) % num_buckets
 def Multistage_Algorithm(data, support_threshold, num_buckets):
-    """
-    Generate frequent item sets using the MultiStage algorithm.
-
-    Parameters:
-    - data: A list of lists, where each inner list represents a transaction.
-    - support_threshold: An integer representing the minimum support count for an item set to be considered frequent.
-    -num_buckets :  The number of buckets to divide the items into when building candidate itemsets.
-   
-    Returns:
-    - frequent_pairs: A dictionary where keys are item pairs and values are their support counts.
-    """
     # First pass
-    #In the first pass, the algorithm counts the frequency of each item using a hash function.
-    #It initializes an array frequency to keep track of the count of items hashed into each bucket.
-    
-    #Basically we are counting the frequncy of each bucket based on our hashfunction
-    frequency = [0]*num_buckets
-    for basket in data:
-        for item in basket:
-        
-            basket_from_hashing = hash_function(item, num_buckets)
+      # Initialize the bucket counts
+    bucket_counts = [0] * num_buckets
 
-            frequency[basket_from_hashing] += 1
+    # Iterate through the transactions and update bucket counts for pairs of items
+    for basket in data:
+        # Generate pairs of items
+        pairs = [(item1, item2) for item1 in basket for item2 in basket if item1 < item2]
+
+        # Hash each pair and update the corresponding bucket count
+        for pair in pairs:
+            hash_value = hash_function(pair, num_buckets)
+            bucket_counts[hash_value] += 1
     
     # Second pass
-    # In the second pass, the algorithm identifies frequent items based on the support threshold.
-    # It goes through each basket again,
-    # checks the count of the item in the frequency array, and determines if it's frequent.
-    
-    #Basically after we had our frequnecy of each basket, we  will go through that list
-    # and fetch items from the frequent baskets
-    frequent_items = {}
+    frequent_pairs = {}
+     # Iterate through the transactions and count pairs that hash to frequent buckets
     for basket in data:
-        for item in basket:
-            # meaning if the bucket is frequent , then we add the item in our frequent items dict
-            if frequency[hash_function(item, num_buckets)] >= support_threshold:
-                if item in frequent_items:
-                    frequent_items[item] += 1
+        # Generate pairs of items
+        pairs = [(item1, item2) for item1 in basket for item2 in basket if item1 < item2]
+
+        # Count pairs that hash to frequent buckets
+        for pair in pairs:
+            hash_value = hash_function(pair, num_buckets)
+            if bucket_counts[hash_value] >= support_threshold:
+                if pair in frequent_pairs:
+                    frequent_pairs[pair] += 1
                 else:
-                    frequent_items[item] = 1
+                    frequent_pairs[pair] = 1
+
 
     # Third pass
-    # removing infrequent items based on the support threshold.
-    
-    #here we are removing false positivies by  checking how many times an item appears in the dataset
-    #because we know in PCY, sometimes  due to collision some items may appear more than their actual value
-    #so we need to check with the number of time they appeared in the list
-    #and remove those which doesn't meet the criteria that is threshold
-    #Basically  we remove all the items which are not frequent from  our frequent_items dictionary
-    frequent_items = {item: freq for item, freq in frequent_items.items() if freq >= support_threshold}
-    # print("\nMULTISTAGE : Your Frequent item pairs are ready\n")
-    # print(frequent_items)
-    # print("\n____________________________\n")
-    return frequent_items
+    # Filter out pairs that do not meet the support threshold
+    frequent_pairs = {pair: count for pair, count in frequent_pairs.items() if count >= support_threshold}
+
+    return frequent_pairs
 
 def Multihash_Algorithm(data, support_threshold, num_buckets):
     """
