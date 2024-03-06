@@ -3,8 +3,16 @@ import hashlib
 #Creating hascode of the  string using sha256 algorithm. and then performing modulo
 #As we know for hashfunction, we need the total number of possible buckets we need thus we need num_buckets
 
-def hash_function(item, num_buckets):
-    return hash(item) % num_buckets
+def hash_function(item, num_buckets,seed=1):
+    # Convert the item to a string for hashing
+   # Convert the item to a string for hashing
+    item_str = str(item) + str(seed)
+    # Use SHA-256 hashing algorithm
+    hashed_item = hashlib.sha256(item_str.encode()).hexdigest()
+    # Perform modulo with the number of buckets
+    hash_value = int(hashed_item, 16) % num_buckets
+    return hash_value
+
 def Multistage_Algorithm(data, support_threshold, num_buckets):
     # First pass
       # Initialize the bucket counts
@@ -63,34 +71,36 @@ def Multihash_Algorithm(data, support_threshold, num_buckets):
     frequency2 = [0]*num_buckets
     for basket in data:
         for item in basket:
-            #first hashfunction call
-            first_basket_from_hashing = hash_function(item, num_buckets)
-            frequency1[first_basket_from_hashing] += 1
-            
-            #second hashfunction call 
-            second_basket_from_hashing= hash_function(hash_function(item, num_buckets), num_buckets)
-            frequency2[second_basket_from_hashing] += 1
+            hash_value1 = hash_function(item, num_buckets, 1)
+            hash_value2 = hash_function(item, num_buckets, 2)
+            frequency1[hash_value1] += 1
+            frequency2[hash_value2] += 1
 
     # Second pass
     
     #same as Multistage but below is different  because now we don't combine both array into one
     #we keep two separate array and use simple AND operation to fetch both frequent buckets then only adding items
+    # Second pass: Count frequent items
     frequent_items = {}
+
     for basket in data:
         for item in basket:
-            
-            # meaning if both buckets are frequent , then only we fetch  the item and store it in our frequent items dict
-            if frequency1[hash_function(item, num_buckets)] >= support_threshold and frequency2[hash_function(hash_function(item, num_buckets), num_buckets)] >= support_threshold:
+            hash_value1 = hash_function(item, num_buckets, 1)
+            hash_value2 = hash_function(item, num_buckets, 2)
+            if frequency1[hash_value1] >= support_threshold and frequency2[hash_value2] >= support_threshold:
                 if item in frequent_items:
                     frequent_items[item] += 1
                 else:
                     frequent_items[item] = 1
-
-    # Filter out infrequent items
     #Same as Multistage 3rd pass
+    # Filter out infrequent items
     frequent_items = {item: freq for item, freq in frequent_items.items() if freq >= support_threshold}
+    
+    return frequent_items
+    # Filter out infrequent items
+    
+   
     # print("\nMULTIHASH : Your Frequent item pairs are ready\n")
     # print(frequent_items)
     # print("\n____________________________\n")
     
-    return frequent_items
