@@ -4,7 +4,7 @@ import hashlib
 #As we know for hashfunction, we need the total number of possible buckets we need thus we need num_buckets
 
 def hash_function(item, num_buckets,seed=1):
-    # Convert the item to a string for hashing
+  
    # Convert the item to a string for hashing
     item_str = str(item) + str(seed)
     # Use SHA-256 hashing algorithm

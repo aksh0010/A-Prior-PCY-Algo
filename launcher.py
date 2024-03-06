@@ -19,7 +19,7 @@ except UnicodeDecodeError:
 
 print(type(data))
 # Define percentages and threshold percentages starts from 1 % , 5% and goes to 100%
-percentages = [0.01, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]
+percentages = [0.01, 0.05, 0.1, 0.2 ] # 0.3,0.4,0.5,0.6,0.7,0.8,0.9,1
 threshold_percentages = [0.01,0.05, 0.1]  # Define your threshold percentages here starts from 1 % , 5% and 10%
 
 Apriori_results = {}  # Initialize a dictionary to store results for each algorithms
@@ -53,11 +53,11 @@ for data_percentage in percentages:
             # print("\nData:\n" + str(subset_data))
             
             Multihash_start_time = time.time()
-            freq_pair_Multihash= Multihash_Algorithm(data=subset_data,support_threshold=support_threshold,num_buckets=600)
+            freq_pair_Multihash= Multihash_Algorithm(data=subset_data,support_threshold=support_threshold,num_buckets=88003)
             Multihash_final_time = time.time()-Multihash_start_time
             Multihash_times[(data_percentage, threshold_percentage)] = Multihash_final_time
           
-      
+            print("_______________________________________Multihash Finished")
           
             # Calling the apriori function to find frequent item sets
             Apriori_start_time= time.time()
@@ -65,13 +65,14 @@ for data_percentage in percentages:
             Apriori_final_time = time.time()-Apriori_start_time
             Apriori_times[(data_percentage, threshold_percentage)] = Apriori_final_time
             
+            print("_______________________________________Apriori Finished")
       
             Multistage_start_time= time.time()
-            freq_pair_Multistage = Multistage_Algorithm(data=subset_data,support_threshold=support_threshold,num_buckets=600)
+            freq_pair_Multistage = Multistage_Algorithm(data=subset_data,support_threshold=support_threshold,num_buckets=88003)
             Multistage_final_time = time.time()-Multistage_start_time
             Multistage_times[(data_percentage, threshold_percentage)] = Multistage_final_time
             
-           
+            print("_______________________________________Multistage Finished")
       
             # Store the results in a nested dictionary which stores  the frequency pairs along 
             # with data_percentage and  threshold_percentage
