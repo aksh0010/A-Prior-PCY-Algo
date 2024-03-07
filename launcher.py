@@ -4,7 +4,7 @@ from PCY import Multihash_Algorithm,Multistage_Algorithm
 import random
 import time
 import matplotlib.pyplot as plt
-
+import math
 
 def count_unique_items(data):
     #Count the total number of unique items in the dataset.
@@ -56,7 +56,7 @@ num_unique_items = count_unique_items(data)
 num_buckets = int(num_unique_items ** 0.5)
 
 # Define percentages and threshold percentages starts from 1 % , 5% and goes to 100%
-percentages = [0.01, 0.05, 0.1 ] 
+percentages = [0.01, 0.05, 0.1 , 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1 ] 
 threshold_percentages = [0.01,0.05, 0.1]  # Define your threshold percentages here starts from 1 % , 5% and 10%
 
 Apriori_results = {}  # Initialize a dictionary to store results for each algorithms
@@ -71,7 +71,7 @@ Multihash_times = {}
 # Loop through each percentage
 for data_percentage in percentages:
     # Calculate the number of transactions based on the percentage of data
-    num_transactions = int(len(data) * data_percentage)
+    num_transactions = math.floor(int(len(data) * data_percentage))
     
     # Randomly select a subset of data for this percentage
     subset_data = random.sample(data, num_transactions)
@@ -85,7 +85,7 @@ for data_percentage in percentages:
             # Calculate the support threshold based on the length of the subset data and threshold percentage
             
            
-            support_threshold = len(subset_data) * threshold_percentage
+            support_threshold = math.floor(len(subset_data) * threshold_percentage)
             print(f'''Data size:{len(subset_data)}''')
             # Print information about the current data percentage and threshold percentage for logging
             print(f'''data_percentage:{data_percentage}''')
