@@ -13,11 +13,25 @@ def hash_function(item, num_buckets,seed=1):
     hash_value = int(hashed_item, 16) % num_buckets
     return hash_value
 
+
 def Multistage_Algorithm(data, support_threshold, num_buckets):
     # First pass
       # Initialize the bucket counts
     bucket_counts = [0] * num_buckets
-
+    
+   # In pass 1 of A-Priori, most memory is idle because we onyl store
+   # We store only individual item counts but we will
+   # In addition to item counts, maintain a hash table with as many buckets as fit in memor
+    #Keep a count for each bucket into which pairs of items are hashed
+    # For each bucket just keep the count, not the actual pairs that hash to the bucket
+    frequency = {}
+    for basket in data:
+        for item in basket:
+            if item in frequency:
+                frequency[item] += 1
+            else:
+                frequency[item] = 1
+             
     # Iterate through the transactions and update bucket counts for pairs of items
     for basket in data:
         # Generate pairs of items
@@ -52,17 +66,6 @@ def Multistage_Algorithm(data, support_threshold, num_buckets):
     return frequent_pairs
 
 def Multihash_Algorithm(data, support_threshold, num_buckets):
-    """
-    Generate frequent item sets using the MultiStage algorithm.
-
-    Parameters:
-    - data: A list of lists, where each inner list represents a transaction.
-    - support_threshold: An integer representing the minimum support count for an item set to be considered frequent.
-    -num_buckets :  The number of buckets to divide the items into when building candidate itemsets.
-    
-    Returns:
-    - frequent_pairs: A dictionary where keys are item pairs and values are their support counts.
-    """
     # First pass
     
     #same like the multistage , we are creating frequency array but we need 2 arrays as we have 2
@@ -97,10 +100,4 @@ def Multihash_Algorithm(data, support_threshold, num_buckets):
     frequent_items = {item: freq for item, freq in frequent_items.items() if freq >= support_threshold}
     
     return frequent_items
-    # Filter out infrequent items
-    
-   
-    # print("\nMULTIHASH : Your Frequent item pairs are ready\n")
-    # print(frequent_items)
-    # print("\n____________________________\n")
-    
+  

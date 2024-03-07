@@ -1,17 +1,4 @@
 def Apriori_Algorithm(data, support_threshold):
-    """
-    Generate frequent item sets using the Apriori algorithm.
-
-    Parameters:
-    - data: A list of lists, where each inner list represents a transaction.
-    - support_threshold: An integer representing the minimum support count for an item set to be considered frequent.
-
-    Returns:
-    - frequent_pairs: A dictionary where keys are item pairs and values are their support counts.
-    """
-    # Calculate the frequency of each item
-    
-    
     #Below is our pass 1 as we know we need to count the frequent items  first before moving on to next steps
     frequency = {}
     for basket in data:
@@ -49,10 +36,4 @@ def Apriori_Algorithm(data, support_threshold):
 
     # Keep only the pairs that have a frequency greater than the support threshold
     frequent_pairs = {pair: freq for pair, freq in all__possible_pairs.items() if freq >= support_threshold}
-
-    # # Print the frequent item pairs
-    # print("\nApriori : Your Frequent item pairs are ready\n")
-    # print(frequent_pairs)
-    # print("\n____________________________\n")
-
     return frequent_pairs
